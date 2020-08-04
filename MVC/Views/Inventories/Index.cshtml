@@ -1,0 +1,131 @@
+﻿@model IEnumerable<MVC.Models.MVCInventoryModels>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<br />
+<style>
+    tr:hover 
+    {
+         background-color:olivedrab;
+         color:black;
+         cursor :pointer;
+
+    }
+
+    </style>
+<p>
+     <a href="@Url.Action("AddOrEdit","Inventories")" class="btn btn-default"><i class="fa fa-plus"></i> Create New</a>
+</p>
+<table class="table table-striped" id="CustomerGrid"> 
+    <thead class="table-heading">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+
+            <td>
+                <a href="@Url.Action("AddOrEdit", "Inventories", new { id = item.Id})" class="btn btn-default"><i class="fa fa-pencil"></i>  Edit</a>
+                <a onclick="Delete(@item.Id)" class="btn btn-default"><i class="fa fa-trash"></i>  Delete</a>
+                <a onclick="view('@item.Name','@item.Description','@item.Price')" class="btn btn-default"><i class="fa fa-trash"></i>  Details</a>
+                @*<a id="detailbtn" class="details btn btn-default " href="javascript:;">View</a>
+                <a onclick="Details(@item.Name,@item.Description,@item.Price)" href="javascript:;" id="Details" class="btn btn-default"><i class="fa fa-trash"></i>  Details</a>*@
+        
+            </td>
+        </tr>
+    } 
+
+</table>
+@section scripts{
+    <script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+        function Delete(id) {
+            alertify.confirm('Are You Sure to Delete this Record ?',function(){
+                window.location.href  = '@Url.Action("Delete", "Inventories")/'+id;
+            },null );
+        }
+
+        function view(id, description, price) {
+            $('#dialog').html('<table><tr> <th>Details</th></tr><tr> <td>Name:' + id + '</td></tr><tr><td>Description:' + description + '</td></tr> <tr><td>Price:' + price + '</td></tr> </tr></table>');
+           $('#dialog').dialog('open');
+        }
+
+
+    </script>
+
+   <div id="dialog" style="display: none">
+       abscdcwek
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+      rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "View Details"
+            });
+            function Details(name, description, price) {
+
+                //var customerId = $("#id").html($(".Id", $(this).closest("tr")).html());
+                //var name = $("#name").html($(".Name", $(this).closest("tr")).html());
+                //var description = $("#Description").html($(".Description", $(this).closest("tr")).html());
+                //var price = $("#Price").html($(".Price", $(this).closest("tr")).html());
+                //var id = $(this).parent().siblings('.ids').text();
+                //var tester = $(this).parent().siblings('.Name').text();
+                //var description = $(this).parent().siblings('.Description ').text();
+                //var price = $(this).parent().siblings('.Price').text();
+                $('#dialog').html('<table><tr> <th>Details</th></tr><tr> <td>Name:' + name + ' </td></tr><td>Description:' + description + '</td> <td>Price:' + price + '</td> </table');
+                $('#dialog').dialog('open');
+
+
+
+            }
+            //function Details(name,description,price) {
+            //    debugger;
+            //    //var customerId = $("#id").html($(".Id", $(this).closest("tr")).html());
+            //    //var name = $("#name").html($(".Name", $(this).closest("tr")).html());
+            //    //var description = $("#Description").html($(".Description", $(this).closest("tr")).html());
+            //    //var price = $("#Price").html($(".Price", $(this).closest("tr")).html());
+            //    //var id = $(this).parent().siblings('.ids').text();
+            //    //var tester = $(this).parent().siblings('.Name').text();
+            //    //var description = $(this).parent().siblings('.Description ').text();
+            //    //var price = $(this).parent().siblings('.Price').text();
+            //    $('#dialog').html('<table><tr> <th>Details</th></tr><tr> <td>Name:' + name + '</td><td>Description:' + description + '</td> <td>Price:' + price + '</td></tr> </table');
+            //    $('#dialog').dialog('open');
+
+
+
+            //}
+            
+        });
+</script>
+}
